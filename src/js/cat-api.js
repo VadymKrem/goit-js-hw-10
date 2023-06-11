@@ -11,14 +11,14 @@ const refs = {
 }
 // Напиши функцию fetchBreeds() которая делает HTTP-запрос
 // и возвращает промис с массивом пород - результатом запроса.
-onInformLoading()
+
 
 function fetchBreeds(url) {
-  onInformLoading()
+  onLoadingInfo()
   return fetchBreed(url)
         .then((response) => {
           breedSelect(response);
-          onInformLoading()
+          onLoadingInfo()
           return ; 
         })
         .catch(() => onError());
@@ -77,11 +77,11 @@ function infoCatBreed(cat) {
 };
 
 // ховає інфу про загрузку та помилку
-function onInformLoading() {
+function onLoadingInfo() {
   refs.messageLoader.classList.toggle('is-hidden');
   refs.spinLoader.classList.toggle('is-hidden');
-  // refs.messageError.classList.toggle('is-hidden');
-  refs.selectBreed.classList.toggle('is-hidden');
+  refs.messageError.classList.toggle('is-hidden');
+  // refs.selectBreed.classList.toggle('is-hidden');
 };
 
 // ховає селект показує лоадер та інфу про загрузку
