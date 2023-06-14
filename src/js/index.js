@@ -97,7 +97,7 @@ function showBreed(returnedPromise) {
     const dataBreed = getDataAboutBreed(returnedPromise);
     const {name, description, temperament, image} = dataBreed;
 
-    const markupInfoBreed = `<img src="${image}" alt="${name}" class="image"><h1>${name}</h1><p class="description">${description}</p><p class="temperament"><b class="title-temperament">Temperament: </b>${temperament}</p>`
+    const markupInfoBreed = `<img src="${image}" alt="${name}" width="480" class="image"><h1>${name}</h1><p class="description">${description}</p><p class="temperament"><b class="title-temperament">Temperament: </b>${temperament}</p>`
     catInfo.innerHTML = markupInfoBreed;
     messageLoader.style.display = 'none';
     spinLoader.style.display = 'none';
