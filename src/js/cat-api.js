@@ -23,15 +23,15 @@ function onBuildUrl(breedId) {
     const taskUrlApi = 'https://api.thecatapi.com/v1/images/search?';
     const keyAPI = 'live_JFdKUiXjxtA7c04F8PmYcxcR6kXmZcouPK1pRumR9hppi2XhZmmqkxDfGDsjtq4Q';
     const searchParametres = new URLSearchParams({
-        breedId: breedId,
+        breed_ids: breedId,
         api_key: keyAPI,
     });
     return (taskUrlApi + searchParametres.toString());
 }
 
-function fetchCatByBreed(breedId, messageError, messageLoader, spinLoader, breedSelect) {       
+function fetchCatByBreed(breedId, messageError, messageLoader, spinLoader, selectBreed) {       
     const urlBreedCat = onBuildUrl(breedId);
-    return fetch(urlBreed)
+    return fetch(urlBreedCat)
     .then(response => {
         if (!response.ok) {
           throw new Error(response.status);
@@ -41,14 +41,13 @@ function fetchCatByBreed(breedId, messageError, messageLoader, spinLoader, breed
       })
     .catch(error => {
         Notiflix.Notify.failure(messageError.textContent);
-        refs.spinLoader.style.display = 'none';
-        refs.messageLoader.style.display = 'none';
-        refs.selectBreed.style.display = 'block';
+        spinLoader.style.display = 'none';
+        messageLoader.style.display = 'none';
+        selectBreed.style.display = 'block';
         throw error;
     })
 
 }
-
 
 export { fetchBreeds, fetchCatByBreed }
 

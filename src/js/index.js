@@ -8,18 +8,25 @@ import "../css/loader.css";
 const taskURL = 'https://api.thecatapi.com/v1';
 const keyAPI = 'live_JFdKUiXjxtA7c04F8PmYcxcR6kXmZcouPK1pRumR9hppi2XhZmmqkxDfGDsjtq4Q';
 
-const refs = {
-     selectBreed : document.querySelector('.breed-select'),
-     catInfo: document.querySelector('.cat-info'),
-     spinLoader : document.querySelector('.loader'),
-     messageLoader : document.querySelector('.loader-msg'),
-     messageError: document.querySelector('.error'),
-}
+
+const selectBreed = document.querySelector('.breed-select');
+const catInfo = document.querySelector('.cat-info');
+const spinLoader = document.querySelector('.loader');
+const messageLoader = document.querySelector('.loader-msg');
+const messageError = document.querySelector('.error');
+
+// const refs = {
+//      selectBreed : document.querySelector('.breed-select'),
+//      catInfo: document.querySelector('.cat-info'),
+//      spinLoader : document.querySelector('.loader'),
+//      messageLoader : document.querySelector('.loader-msg'),
+//      messageError: document.querySelector('.error'),
+// }
 
 
-refs.spinLoader.style.display = 'none';
-refs.messageLoader.style.display = 'none';
-refs.messageError.style.display = 'none';
+spinLoader.style.display = 'none';
+messageLoader.style.display = 'none';
+messageError.style.display = 'none';
 
 let arrayBreedsCats = [];
 
@@ -42,7 +49,7 @@ function breedSelect(response) {
 
 async function getBreeds() {
     try {
-        const response = await fetchBreeds(refs.messageError);
+        const response = await fetchBreeds();
         breedSelect(response);
         let listOfBreeds = arrayBreedsCats.map(cat => {
             let optionCat = document.createElement('option');
@@ -50,10 +57,17 @@ async function getBreeds() {
             optionCat.textContent = cat.name;
             return optionCat;
         });
-        refs.selectBreed.append(...listOfBreeds);
-          
+        selectBreed.append(...listOfBreeds);
+        new SlimSelect({
+  select: selectBreed,
+  settings: {
+    placeholderText: 'Choose the your favourite breed cat',
+    allowDeselect: true,
+    maxSelected: 1,
+  },
+});  
     } catch (error) {
-        Notiflix.Notify.failure(refs.messageError.textContent);
+        Notiflix.Notify.failure(messageError.textContent);
         throw error; 
     }
 }
@@ -61,14 +75,7 @@ async function getBreeds() {
 getBreeds();
 
 
-const slimSelect = new SlimSelect({
-  select: refs.selectBreed,
-  settings: {
-    placeholderText: 'Choose the breed of the cat',
-    allowDeselect: true,
-    maxSelected: 1,
-  },
-});
+
 
 // function onChoiceCatBreed(event) {
 //     const choiceBreed = event.target.value;
@@ -77,51 +84,44 @@ const slimSelect = new SlimSelect({
 // };
 
 
-function getDataAboutBreed(data) {
-    const name = data[0].breeds[0].name;
-    const description = data[0].breeds[0].description;
-    const temperament = data[0].breeds[0].temperament;
-    const image = data[0].url;
+function getDataAboutBreed(dataBreed) {
+    const name = dataBreed[0].breeds[0].name;
+    const description = dataBreed[0].breeds[0].description;
+    const temperament = dataBreed[0].breeds[0].temperament;
+    const image = dataBreed[0].url;
 
     return {'name': name, 'description': description, 'temperament': temperament, 'image': image}
 }
 
-function showBreed(promise) {
-    const elements = getDataAboutBreed(promise);
+function showBreed(returnedPromise) {
+    const dataBreed = getDataAboutBreed(returnedPromise);
     const {name, description, temperament, image} = dataBreed;
 
     const markupInfoBreed = `<img src="${image}" alt="${name}" class="image"><h1>${name}</h1><p class="description">${description}</p><p class="temperament"><b class="title-temperament">Temperament: </b>${temperament}</p>`
-    refs.catInfo.innerHTML = markupInfoBreed;
-    refs.messageLoader.style.display = 'none';
-    refs.spinLoader.style.display = 'none';
+    catInfo.innerHTML = markupInfoBreed;
+    messageLoader.style.display = 'none';
+    spinLoader.style.display = 'none';
 }
 
 async function onChoiceCatBreed(event) {
     
     try {
-        const breedIndex = refs.selectBreed.options[refs.selectBreed.selectedIndex].value;
-        refs.selectBreed.style.display = 'none';
-        refs.catInfo.style.display = 'none';
-        refs.messageLoader.style.display = 'block';
-        refs.spinLoader.style.display = 'block';
-        const promise = await fetchCatByBreed(breedId);
-        showBreed(promise);
-        refs.catInfo.style.display = 'block';
-        refs.selectBreed.style.display = 'block';
+        const breedId = selectBreed.options[selectBreed.selectedIndex].value;
+        selectBreed.style.display = 'none';
+        catInfo.style.display = 'none';
+        messageLoader.style.display = 'block';
+        spinLoader.style.display = 'block';
+        const returnedPromise = await fetchCatByBreed(breedId, messageError, messageLoader, spinLoader, selectBreed);
+        showBreed(returnedPromise);
+        catInfo.style.display = 'block';
+        selectBreed.style.display = 'none';
         
     } catch (error) {
-        Notiflix.Notify.failure(refs.messageError.textContent);
-        refs.messageLoader.style.display = 'none';
-        refs.spinLoader.style.display = 'none';
-        refs.selectBreed.style.display = 'block';
+        Notiflix.Notify.failure(messageError.textContent);
+        messageLoader.style.display = 'none';
+        spinLoader.style.display = 'none';
+        selectBreed.style.display = 'block';
     }
-
 }
 
-
-
-
-
-refs.selectBreed.addEventListener('change', onChoiceCatBreed);
-
-// const breedId = refs.selectBreed.options[refs.selectBreed.selectedIndex].value;
+selectBreed.addEventListener('change', onChoiceCatBreed);
