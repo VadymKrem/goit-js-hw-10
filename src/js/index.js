@@ -24,8 +24,8 @@ const messageError = document.querySelector('.error');
 // }
 
 
-spinLoader.style.display = 'none';
-messageLoader.style.display = 'none';
+spinLoader.style.display = 'block';
+messageLoader.style.display = 'block';
 messageError.style.display = 'none';
 
 let arrayBreedsCats = [];
@@ -57,6 +57,8 @@ async function getBreeds() {
             optionCat.textContent = cat.name;
             return optionCat;
         });
+        messageLoader.style.display = 'none';
+        spinLoader.style.display = 'none';
         selectBreed.append(...listOfBreeds);
         new SlimSelect({
   select: selectBreed,
