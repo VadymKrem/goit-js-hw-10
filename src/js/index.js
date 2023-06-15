@@ -27,6 +27,7 @@ const messageError = document.querySelector('.error');
 spinLoader.style.display = 'block';
 messageLoader.style.display = 'block';
 messageError.style.display = 'none';
+selectBreed.style.display = 'none';
 
 let arrayBreedsCats = [];
 
@@ -59,6 +60,7 @@ async function getBreeds() {
         });
         messageLoader.style.display = 'none';
         spinLoader.style.display = 'none';
+        selectBreed.style.display = 'block';
         selectBreed.append(...listOfBreeds);
         new SlimSelect({
   select: selectBreed,
