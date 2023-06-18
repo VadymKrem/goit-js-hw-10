@@ -8,21 +8,11 @@ import "../css/loader.css";
 const taskURL = 'https://api.thecatapi.com/v1';
 const keyAPI = 'live_JFdKUiXjxtA7c04F8PmYcxcR6kXmZcouPK1pRumR9hppi2XhZmmqkxDfGDsjtq4Q';
 
-
 const selectBreed = document.querySelector('.breed-select');
 const catInfo = document.querySelector('.cat-info');
 const spinLoader = document.querySelector('.loader');
 const messageLoader = document.querySelector('.loader-msg');
 const messageError = document.querySelector('.error');
-
-// const refs = {
-//      selectBreed : document.querySelector('.breed-select'),
-//      catInfo: document.querySelector('.cat-info'),
-//      spinLoader : document.querySelector('.loader'),
-//      messageLoader : document.querySelector('.loader-msg'),
-//      messageError: document.querySelector('.error'),
-// }
-
 
 spinLoader.style.display = 'block';
 messageLoader.style.display = 'block';
@@ -36,17 +26,6 @@ function breedSelect(response) {
         arrayBreedsCats.push({name: response[breed].name, id: response[breed].id})
     }
 }
-
-// function breedSelect(breeds) {
-//     const markupSelectCats = breeds.map(cat => {
-//                 return `<option value="${cat.id}">${cat.name}</option>`
-//             }).join('');
-//     refs.selectBreed.insertAdjacentHTML('afterbegin', markupSelectCats);
-//     new SlimSelect({
-//   select: '#single'
-// })
-//     return;
-// };
 
 async function getBreeds() {
     try {
@@ -77,16 +56,6 @@ async function getBreeds() {
 }
 
 getBreeds();
-
-
-
-
-// function onChoiceCatBreed(event) {
-//     const choiceBreed = event.target.value;
-//     return fetchCatByBreed(choiceBreed);
-       
-// };
-
 
 function getDataAboutBreed(dataBreed) {
     const name = dataBreed[0].breeds[0].name;
